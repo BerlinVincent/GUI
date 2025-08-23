@@ -131,7 +131,7 @@ void WorldScene::draw() {
 }
 
 MainMenu::MainMenu(SceneManager *manager) : MenuScene(manager, "Main Menu", {
-    new Button("Start Game", [this](){ m_manager->pushScene<WorldScene>(1.0f); }, Align::center),
+    new Button("Start Game", [this](){ m_manager->pushScene<WorldScene>(); }, Align::center),
     new Button("Options", [](){}, Align::center),
     new Button("Exit", [this](){ killScene(); }, Align::center)
 }) {}

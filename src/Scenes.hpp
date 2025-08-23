@@ -80,7 +80,7 @@ public:
     void update() override;
     void draw() override;
 
-    WorldScene(SceneManager *manager, float baseMoveSpeed) 
+    WorldScene(SceneManager *manager) 
         : Scene(manager), tileSize(32) {
         startScene();
 
@@ -100,14 +100,14 @@ public:
 
         playerPos = {4.0f * tileSize, 4.0f * tileSize}; // player is initially in the middle of the map
         nextPos = playerPos;                            // and isn't moving
-        moveSpeed = tileSize / 8;
+        moveSpeed = tileSize / 16;                      // but has a nice pace if they start to move
 
         // initialize the camera
 
         camera.target = {playerPos.x + tileSize / 2.0f, playerPos.y + tileSize / 2.0f}; // camera is centered on the player
         camera.offset = {(float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2};    // and is places in the middle of the screen
         camera.rotation = 0.0f;                                                         // is not rotated
-        camera.zoom = 2.0f;                                                             // and is zoomed in so everything looks big
+        camera.zoom = tileSize / 16;                                                    // and is zoomed in so everything looks big
 
         // draw the map into the buffer
 
