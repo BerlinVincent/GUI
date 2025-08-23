@@ -61,7 +61,7 @@ public:
 
 class WorldScene : public Scene {
     // the map in tiles
-    std::vector<std::vector<int>> m_tileMap;
+    std::vector<std::vector<Tile>> m_tileMap;
     // the set of textures tiles render as
     Texture2D m_tileSet;
     // map gets drawn here once and is then reused
@@ -81,13 +81,13 @@ public:
     void draw() override;
 
     WorldScene(SceneManager *manager, float baseMoveSpeed) 
-        : Scene(manager), tileSize(8), moveSpeed(baseMoveSpeed) {
+        : Scene(manager), tileSize(32) {
         startScene();
 
         // initialize the tile map and load the tile set
 
-        m_tileMap = std::vector<std::vector<int>>(9, std::vector<int>(9, 0));   // set size of map and set all tiles to bare dirt
-        m_tileSet = LoadTexture("../../tileset.png");
+        m_tileMap = std::vector<std::vector<Tile>>(9, std::vector<Tile>(9, Tile({3, 3})));   // set size of map
+        m_tileSet = LoadTexture("../../Pixel Art Top Down - Basic/Texture/TX Tileset Stone Ground.png");
 
         // initialize the world buffer with the tile map
 
@@ -100,13 +100,14 @@ public:
 
         playerPos = {4.0f * tileSize, 4.0f * tileSize}; // player is initially in the middle of the map
         nextPos = playerPos;                            // and isn't moving
+        moveSpeed = tileSize / 8;
 
         // initialize the camera
 
         camera.target = {playerPos.x + tileSize / 2.0f, playerPos.y + tileSize / 2.0f}; // camera is centered on the player
         camera.offset = {(float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2};    // and is places in the middle of the screen
         camera.rotation = 0.0f;                                                         // is not rotated
-        camera.zoom = 8.0f;                                                             // and is zoomed in so everything looks big
+        camera.zoom = 2.0f;                                                             // and is zoomed in so everything looks big
 
         // draw the map into the buffer
 
@@ -115,12 +116,12 @@ public:
 
         for (int y = 0; y < m_tileMap.size(); y++) {        // all rows
            for (int x = 0; x < m_tileMap[y].size(); x++) {  // all columns
-                int tileIndex = m_tileMap[y][x];
+                Vector2 tileIndex = m_tileMap[y][x].m_tileSetCoordinates;
 
                 // where texture comes from in the tile set
                 Rect src {
-                   .left = tileIndex * tileSize,
-                   .top = 0,
+                   .left = (int)tileIndex.x * tileSize,
+                   .top = (int)tileIndex.y * tileSize,
                    .width = tileSize,
                    .height = tileSize
                 };

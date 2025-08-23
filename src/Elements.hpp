@@ -25,6 +25,15 @@ struct Rect {
     }
 };
 
+struct Tile {
+    // more Tile Data to be implemented
+    // ...
+
+    Vector2 m_tileSetCoordinates;
+
+    Tile(Vector2 coords) : m_tileSetCoordinates(coords) {}
+};
+
 /**
  * @brief A function that scales font size with window size based on a readable size
  * @returns The font size for the text

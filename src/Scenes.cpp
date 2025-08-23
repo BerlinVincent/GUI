@@ -81,10 +81,10 @@ void WorldScene::update() {
 
     // movement input
     if (playerPos.x == nextPos.x && playerPos.y == nextPos.y) {
-        if      (IsKeyDown(KEY_UP))     nextPos.y -= tileSize;
-        else if (IsKeyDown(KEY_DOWN))   nextPos.y += tileSize;
-        else if (IsKeyDown(KEY_LEFT))   nextPos.x -= tileSize;
-        else if (IsKeyDown(KEY_RIGHT))  nextPos.x += tileSize;
+        if      (IsKeyDown(KEY_UP))     (nextPos.y - tileSize < 0) ? : nextPos.y -= tileSize;
+        else if (IsKeyDown(KEY_DOWN))   (nextPos.y + tileSize > (m_tileMap.size() - 1) * tileSize) ? : nextPos.y += tileSize;
+        else if (IsKeyDown(KEY_LEFT))   (nextPos.x - tileSize < 0) ? : nextPos.x -= tileSize;
+        else if (IsKeyDown(KEY_RIGHT))  (nextPos.x + tileSize > (m_tileMap.size() - 1) * tileSize) ? : nextPos.x += tileSize;
     } 
     else // player movement
     {
