@@ -64,8 +64,7 @@ class WorldScene : public Scene {
     std::vector<std::vector<Tile>> m_tileMap;
     // the set of textures tiles render as
     Texture2D m_tileSet;
-    // map gets drawn here once and is then reused
-    RenderTexture2D m_worldBuffer;
+    Texture2D m_playerSprite;
     int tileSize;
     
     Camera2D camera;
@@ -80,21 +79,14 @@ public:
     void update() override;
     void draw() override;
 
-    WorldScene(SceneManager *manager) 
-        : Scene(manager), tileSize(32) {
+    WorldScene(SceneManager *manager, std::vector<std::vector<Tile>> tileMap) 
+        : Scene(manager), m_tileMap(tileMap), tileSize(32) {
         startScene();
 
-        // initialize the tile map and load the tile set
+        // load the tile set
 
-        m_tileMap = std::vector<std::vector<Tile>>(9, std::vector<Tile>(9, Tile({3, 3})));   // set size of map
         m_tileSet = LoadTexture("../../Pixel Art Top Down - Basic/Texture/TX Tileset Stone Ground.png");
-
-        // initialize the world buffer with the tile map
-
-        m_worldBuffer = LoadRenderTexture(
-            (int)m_tileMap[0].size() * tileSize,
-            (int)m_tileMap.size() * tileSize
-        );
+        m_playerSprite = LoadTexture("../../Pixel Art Top Down - Basic/Texture/TX Player.png");
 
         // initialize the position data
 
@@ -108,43 +100,11 @@ public:
         camera.offset = {(float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2};    // and is places in the middle of the screen
         camera.rotation = 0.0f;                                                         // is not rotated
         camera.zoom = tileSize / 16;                                                    // and is zoomed in so everything looks big
-
-        // draw the map into the buffer
-
-        BeginTextureMode(m_worldBuffer);
-        ClearBackground(BLACK);
-
-        for (int y = 0; y < m_tileMap.size(); y++) {        // all rows
-           for (int x = 0; x < m_tileMap[y].size(); x++) {  // all columns
-                Vector2 tileIndex = m_tileMap[y][x].m_tileSetCoordinates;
-
-                // where texture comes from in the tile set
-                Rect src {
-                   .left = (int)tileIndex.x * tileSize,
-                   .top = (int)tileIndex.y * tileSize,
-                   .width = tileSize,
-                   .height = tileSize
-                };
-                // where the texture goes in the tile map
-                Rect dest {
-                   .left = x * tileSize,
-                   .top = y * tileSize,
-                   .width = tileSize,
-                   .height = tileSize
-                };
-
-                // draw the texture to the tile map
-
-                DrawTexturePro(m_tileSet, src, dest, {0, 0}, 0.0f, WHITE);
-            }
-        }
-
-        EndTextureMode();
     }
 
     ~WorldScene() {
         UnloadTexture(m_tileSet);
-        UnloadRenderTexture(m_worldBuffer);
+        UnloadTexture(m_playerSprite);
     }
 };
 

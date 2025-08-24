@@ -107,8 +107,28 @@ void WorldScene::draw() {
     ClearBackground(BLACK);
     BeginMode2D(camera);
 
-    // draw from buffer so as to not draw the entire map every time
-    DrawTextureRec(m_worldBuffer.texture, {0, 0, (float)m_worldBuffer.texture.width, -(float)m_worldBuffer.texture.height}, {0, 0}, WHITE);
+    Rect src, dest;
+
+    for (int y = 0; y < m_tileMap.size(); y++) {
+        for ( int x = 0; x < m_tileMap[y].size(); x++) {
+            Vector2 tileIndex = m_tileMap[y][x].m_tileSetCoordinates;
+
+            src = {
+                .left = (int)tileIndex.x * tileSize,
+                .top = (int)tileIndex.y * tileSize,
+                .width = tileSize * 2,
+                .height = tileSize
+            };
+            dest = {
+                .left = y * tileSize,
+                .top = x * tileSize,
+                .width = tileSize,
+                .height = tileSize
+            };
+
+            DrawTexturePro(m_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
+        }
+    }
     
     /* // Draw debug grid
     for (int y = 0; y < m_tileMap.size(); y++) {
@@ -124,14 +144,29 @@ void WorldScene::draw() {
     } */
 
     // draw player (currently a red rectangle)
-    DrawRectangle((int)playerPos.x, (int)playerPos.y, tileSize, tileSize, RED);
+    // DrawRectangle((int)playerPos.x, (int)playerPos.y, tileSize, tileSize, RED);
+
+    src = {
+        .left = 0,
+        .top = 0,
+        .width = tileSize,
+        .height = tileSize * 2
+    };
+    dest = {
+        .left = (int)playerPos.x * tileSize,
+        .top = (int)playerPos.y * tileSize - tileSize,
+        .width = tileSize,
+        .height = tileSize * 2
+    };
+
+    DrawTexturePro(m_playerSprite, src, dest, (Vector2){0, 0}, 0.0f, BLACK);
 
     EndMode2D();
     EndDrawing();
 }
 
 MainMenu::MainMenu(SceneManager *manager) : MenuScene(manager, "Main Menu", {
-    new Button("Start Game", [this](){ m_manager->pushScene<WorldScene>(); }, Align::center),
+    new Button("Start Game", [this](){ m_manager->pushScene<WorldScene>(std::vector<std::vector<Tile>>(9, std::vector<Tile>(9, Tile({3, 3})))); }, Align::center),
     new Button("Options", [](){}, Align::center),
     new Button("Exit", [this](){ killScene(); }, Align::center)
 }) {}
