@@ -74,6 +74,8 @@ class WorldScene : public Scene {
     Vector2 nextPos;
     // how fast the player goes
     float moveSpeed;
+    // last direction the player moved in
+    int lastMoveDirection;
 
 public:
     void update() override;
@@ -93,6 +95,7 @@ public:
         playerPos = {4.0f * tileSize, 4.0f * tileSize}; // player is initially in the middle of the map
         nextPos = playerPos;                            // and isn't moving
         moveSpeed = tileSize / 16;                      // but has a nice pace if they start to move
+        lastMoveDirection = 0;                          // player initially faces southwards
 
         // initialize the camera
 

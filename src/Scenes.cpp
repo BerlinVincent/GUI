@@ -81,10 +81,30 @@ void WorldScene::update() {
 
     // movement input
     if (playerPos.x == nextPos.x && playerPos.y == nextPos.y) {
-        if      (IsKeyDown(KEY_UP))     (nextPos.y - tileSize < 0) ? : nextPos.y -= tileSize;
-        else if (IsKeyDown(KEY_DOWN))   (nextPos.y + tileSize > (m_tileMap.size() - 1) * tileSize) ? : nextPos.y += tileSize;
-        else if (IsKeyDown(KEY_LEFT))   (nextPos.x - tileSize < 0) ? : nextPos.x -= tileSize;
-        else if (IsKeyDown(KEY_RIGHT))  (nextPos.x + tileSize > (m_tileMap.size() - 1) * tileSize) ? : nextPos.x += tileSize;
+        if      (IsKeyDown(KEY_UP))     {
+            if (nextPos.y - tileSize >= 0) {
+                nextPos.y -= tileSize;
+                lastMoveDirection = 2;
+            }
+        }
+        else if (IsKeyDown(KEY_DOWN)) {
+            if (nextPos.y + tileSize <= (m_tileMap.size() - 1) * tileSize) {
+                nextPos.y += tileSize;
+                lastMoveDirection = 0;
+            }
+        }
+        else if (IsKeyDown(KEY_LEFT)) {
+            if (nextPos.x - tileSize >= 0) {
+                nextPos.x -= tileSize;
+                lastMoveDirection = 1;
+            }
+        }
+        else if (IsKeyDown(KEY_RIGHT)) {
+            if (nextPos.x + tileSize <= (m_tileMap.size() - 1) * tileSize) {
+                nextPos.x += tileSize;
+                lastMoveDirection = 3;
+            }
+        }
     } 
     else // player movement
     {
@@ -99,7 +119,7 @@ void WorldScene::update() {
     }
 
     // adjust camera position
-    camera.target = {playerPos.x + tileSize / 2.0f, playerPos.y + tileSize / 2.0f};
+    camera.target = {playerPos.x + tileSize / 2, playerPos.y + tileSize / 2};
 }
 
 void WorldScene::draw() {
@@ -116,7 +136,7 @@ void WorldScene::draw() {
             src = {
                 .left = (int)tileIndex.x * tileSize,
                 .top = (int)tileIndex.y * tileSize,
-                .width = tileSize * 2,
+                .width = tileSize,
                 .height = tileSize
             };
             dest = {
@@ -146,22 +166,73 @@ void WorldScene::draw() {
     // draw player (currently a red rectangle)
     // DrawRectangle((int)playerPos.x, (int)playerPos.y, tileSize, tileSize, RED);
 
+    // Player Shadow
+
     src = {
-        .left = 0,
-        .top = 0,
-        .width = tileSize,
-        .height = tileSize * 2
-    };
-    dest = {
-        .left = (int)playerPos.x * tileSize,
-        .top = (int)playerPos.y * tileSize - tileSize,
+        .left = 3 * tileSize - 3,
+        .top = 2,
         .width = tileSize,
         .height = tileSize * 2
     };
 
-    DrawTexturePro(m_playerSprite, src, dest, (Vector2){0, 0}, 0.0f, BLACK);
+    dest = {
+        .left = (int)playerPos.x,
+        .top = (int)playerPos.y - tileSize,
+        .width = tileSize,
+        .height = tileSize * 2
+    };
+
+    DrawTexturePro(m_playerSprite, src, dest, (Vector2){0, 0}, 0, WHITE);
+
+    if (lastMoveDirection == 0) {
+        src = {
+            .left = 0,
+            .top = 0,
+            .width = tileSize,
+            .height = tileSize * 2
+        };
+    }
+    if (lastMoveDirection == 1) {
+        src = {
+            .left = 2 * tileSize - 1,
+            .top = 0,
+            .width = tileSize,
+            .height = tileSize * 2
+        };
+    }
+    if (lastMoveDirection == 2) {
+        src = {
+            .left = 1 * tileSize,
+            .top = 0,
+            .width = tileSize,
+            .height = tileSize * 2
+        };
+    }
+    if (lastMoveDirection == 3) {
+        src = {
+            .left = 2 * tileSize,
+            .top = 0,
+            .width = -tileSize,
+            .height = tileSize * 2
+        };
+    }
+
+    // Player
+
+    DrawTexturePro(m_playerSprite, src, dest, (Vector2){0, 0}, 0, WHITE);
 
     EndMode2D();
+
+    int boxWidth = 100;
+    int boxHeight = 75;
+    int margin = 10;
+
+    DrawRectangle(margin, margin, boxWidth, boxHeight, Fade(DARKGRAY, 0.8f));
+
+    DrawText(std::to_string((int)playerPos.x).c_str(), margin + 5, margin + 5, 20, YELLOW);
+    DrawText(std::to_string((int)playerPos.y).c_str(), margin + 5, margin + 25, 20, YELLOW);
+    DrawText(std::to_string(lastMoveDirection).c_str(), margin + 5, margin + 50, 20, YELLOW);
+
     EndDrawing();
 }
 
