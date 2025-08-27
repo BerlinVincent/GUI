@@ -79,31 +79,31 @@ void WorldScene::update() {
     int key = GetKeyPressed();
     if (key == KEY_ESCAPE) killScene();
 
-    // movement input
+    // movement input & direction detection
     if (playerPos.x == nextPos.x && playerPos.y == nextPos.y) {
         if      (IsKeyDown(KEY_UP))     {
             if (nextPos.y - tileSize >= 0) {
                 nextPos.y -= tileSize;
-                lastMoveDirection = 2;
             }
+            lastMoveDirection = 2;
         }
         else if (IsKeyDown(KEY_DOWN)) {
             if (nextPos.y + tileSize <= (m_tileMap.size() - 1) * tileSize) {
                 nextPos.y += tileSize;
-                lastMoveDirection = 0;
             }
+            lastMoveDirection = 0;
         }
         else if (IsKeyDown(KEY_LEFT)) {
             if (nextPos.x - tileSize >= 0) {
                 nextPos.x -= tileSize;
-                lastMoveDirection = 1;
             }
+            lastMoveDirection = 1;
         }
         else if (IsKeyDown(KEY_RIGHT)) {
             if (nextPos.x + tileSize <= (m_tileMap.size() - 1) * tileSize) {
                 nextPos.x += tileSize;
-                lastMoveDirection = 3;
             }
+            lastMoveDirection = 3;
         }
     } 
     else // player movement
@@ -163,10 +163,7 @@ void WorldScene::draw() {
         }
     } */
 
-    // draw player (currently a red rectangle)
-    // DrawRectangle((int)playerPos.x, (int)playerPos.y, tileSize, tileSize, RED);
-
-    // Player Shadow
+    // draw Player Shadow
 
     src = {
         .left = 3 * tileSize - 3,
@@ -183,6 +180,8 @@ void WorldScene::draw() {
     };
 
     DrawTexturePro(m_playerSprite, src, dest, (Vector2){0, 0}, 0, WHITE);
+
+    // select player sprite based on last move direction
 
     if (lastMoveDirection == 0) {
         src = {
@@ -217,21 +216,19 @@ void WorldScene::draw() {
         };
     }
 
-    // Player
+    // draw Player
 
     DrawTexturePro(m_playerSprite, src, dest, (Vector2){0, 0}, 0, WHITE);
 
     EndMode2D();
 
-    int boxWidth = 100;
-    int boxHeight = 75;
-    int margin = 10;
+    // draw debug info
 
-    DrawRectangle(margin, margin, boxWidth, boxHeight, Fade(DARKGRAY, 0.8f));
+    DrawRectangle(10, 10, 100, 75, Fade(DARKGRAY, 0.8f));
 
-    DrawText(std::to_string((int)playerPos.x).c_str(), margin + 5, margin + 5, 20, YELLOW);
-    DrawText(std::to_string((int)playerPos.y).c_str(), margin + 5, margin + 25, 20, YELLOW);
-    DrawText(std::to_string(lastMoveDirection).c_str(), margin + 5, margin + 50, 20, YELLOW);
+    DrawText(std::to_string((int)playerPos.x).c_str(), 15, 15, 20, YELLOW);
+    DrawText(std::to_string((int)playerPos.y).c_str(), 15, 35, 20, YELLOW);
+    DrawText(std::to_string(lastMoveDirection).c_str(), 15, 60, 20, YELLOW);
 
     EndDrawing();
 }
