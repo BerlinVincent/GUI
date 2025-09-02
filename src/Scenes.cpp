@@ -1,5 +1,6 @@
 #include "Scenes.hpp"
 #include "SceneManager.hpp"
+#include "TestRoom.hpp"
 
 void MenuScene::update() {
     int key = GetKeyPressed();
@@ -234,7 +235,7 @@ void WorldScene::draw() {
 }
 
 MainMenu::MainMenu(SceneManager *manager) : MenuScene(manager, "Main Menu", {
-    new Button("Start Game", [this](){ m_manager->pushScene<WorldScene>(std::vector<std::vector<Tile>>(9, std::vector<Tile>(9, Tile({3, 3})))); }, Align::center),
+    new Button("Start Game", [this](){ m_manager->pushScene<WorldScene>(maps::TestRoom()); }, Align::center),
     new Button("Options", [](){}, Align::center),
     new Button("Exit", [this](){ killScene(); }, Align::center)
 }) {}

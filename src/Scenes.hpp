@@ -15,10 +15,13 @@ class SceneManager;
  * @brief Abstract base class for all other scenes
  */
 class Scene {
+
 private:
     bool m_running;                     // wether scene is supposed to be running or not
+
 protected:
     SceneManager *m_manager = nullptr;  // back-reference to this scene's manager
+    
 public:
     virtual ~Scene() = default;
     Scene(SceneManager *manager = nullptr) : m_manager(manager) {}
@@ -37,6 +40,8 @@ public:
 };
 
 class MenuScene : public Scene {
+
+private:
     std::string m_menuTitle;
     std::vector<Element *> m_elements;
 
@@ -60,6 +65,8 @@ public:
 };
 
 class WorldScene : public Scene {
+
+private:
     // the map in tiles
     std::vector<std::vector<Tile>> m_tileMap;
     // the set of textures tiles render as
@@ -92,7 +99,7 @@ public:
 
         // initialize the position data
 
-        playerPos = {4.0f * tileSize, 4.0f * tileSize}; // player is initially in the middle of the map
+        playerPos = {(float)((int)tileMap.size() / 2) * tileSize, (float)((int)tileMap.size() / 2) * tileSize}; // player is initially in the middle of the map
         nextPos = playerPos;                            // and isn't moving
         moveSpeed = tileSize / 16;                      // but has a nice pace if they start to move
         lastMoveDirection = 0;                          // player initially faces southwards

@@ -32,6 +32,7 @@ struct Tile {
     Vector2 m_tileSetCoordinates;
 
     Tile(Vector2 coords) : m_tileSetCoordinates(coords) {}
+    Tile(int x, int y) : m_tileSetCoordinates(Vector2((float)x, (float) y)) {}
 };
 
 /**
