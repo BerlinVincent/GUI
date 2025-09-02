@@ -82,26 +82,26 @@ void WorldScene::update() {
 
     // movement input & direction detection
     if (playerPos.x == nextPos.x && playerPos.y == nextPos.y) {
-        if      (IsKeyDown(KEY_UP))     {
-            if (nextPos.y - tileSize >= 0) {
+        if (IsKeyDown(KEY_UP)) {
+            if (isWalkable(nextPos.x, nextPos.y - tileSize)) {
                 nextPos.y -= tileSize;
             }
             lastMoveDirection = 2;
         }
         else if (IsKeyDown(KEY_DOWN)) {
-            if (nextPos.y + tileSize <= (m_tileMap.size() - 1) * tileSize) {
+            if (isWalkable(nextPos.x, nextPos.y + tileSize)) {
                 nextPos.y += tileSize;
             }
             lastMoveDirection = 0;
         }
         else if (IsKeyDown(KEY_LEFT)) {
-            if (nextPos.x - tileSize >= 0) {
+            if (isWalkable(nextPos.x - tileSize, nextPos.y)) {
                 nextPos.x -= tileSize;
             }
             lastMoveDirection = 1;
         }
         else if (IsKeyDown(KEY_RIGHT)) {
-            if (nextPos.x + tileSize <= (m_tileMap.size() - 1) * tileSize) {
+            if (isWalkable(nextPos.x + tileSize, nextPos.y)) {
                 nextPos.x += tileSize;
             }
             lastMoveDirection = 3;
@@ -227,8 +227,10 @@ void WorldScene::draw() {
 
     DrawRectangle(10, 10, 100, 75, Fade(DARKGRAY, 0.8f));
 
-    DrawText(std::to_string((int)playerPos.x).c_str(), 15, 15, 20, YELLOW);
-    DrawText(std::to_string((int)playerPos.y).c_str(), 15, 35, 20, YELLOW);
+    DrawText(std::to_string((int)playerPos.x / tileSize).c_str(), 15, 15, 20, YELLOW);
+    DrawText(std::to_string((int)playerPos.y / tileSize).c_str(), 15, 35, 20, YELLOW);
+    DrawText(std::to_string((int)nextPos.x / tileSize).c_str(), 40, 15, 20, YELLOW);
+    DrawText(std::to_string((int)nextPos.y / tileSize).c_str(), 40, 35, 20, YELLOW);
     DrawText(std::to_string(lastMoveDirection).c_str(), 15, 60, 20, YELLOW);
 
     EndDrawing();

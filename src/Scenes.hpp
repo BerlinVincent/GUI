@@ -88,6 +88,18 @@ public:
     void update() override;
     void draw() override;
 
+    bool isWalkable(int x, int y) {
+        x = x / tileSize;
+        y = y / tileSize;
+        // out of bounds coordinates
+        if (x < 0 || x >= m_tileMap[y].size() || y < 0 || y >= m_tileMap.size()) return false;
+        // non walkable tile in bounds
+        if (m_tileMap[y][x].m_tileSetCoordinates.y < 0 || m_tileMap[y][x].m_tileSetCoordinates.x < 0) return false;
+
+        // if nothing should prevent movement, tile is walkable
+        return true;
+    }
+
     WorldScene(SceneManager *manager, std::vector<std::vector<Tile>> tileMap) 
         : Scene(manager), m_tileMap(tileMap), tileSize(32) {
         startScene();
@@ -99,7 +111,7 @@ public:
 
         // initialize the position data
 
-        playerPos = {(float)((int)tileMap.size() / 2) * tileSize, (float)((int)tileMap.size() / 2) * tileSize}; // player is initially in the middle of the map
+        playerPos = {2.0f * tileSize, 2.0f * tileSize}; // player is initially in the middle of the map
         nextPos = playerPos;                            // and isn't moving
         moveSpeed = tileSize / 16;                      // but has a nice pace if they start to move
         lastMoveDirection = 0;                          // player initially faces southwards
