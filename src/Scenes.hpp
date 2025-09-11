@@ -106,8 +106,8 @@ public:
 
         // load the tile set
 
-        m_tileSet = LoadTexture("../../Pixel Art Top Down - Basic/Texture/TX Tileset Stone Ground.png");
-        m_playerSprite = LoadTexture("../../Pixel Art Top Down - Basic/Texture/TX Player.png");
+        m_tileSet = LoadTexture("../../Textures/Tileset Stone.png");
+        m_playerSprite = LoadTexture("../../Textures/Player.png");
 
         // initialize the position data
 
@@ -127,6 +127,31 @@ public:
     ~WorldScene() {
         UnloadTexture(m_tileSet);
         UnloadTexture(m_playerSprite);
+    }
+};
+
+class WorldEditor : public Scene {
+
+private:
+    std::vector<std::vector<Tile>> m_tileMap;
+    Tile m_currentTile;
+
+    Texture2D Plants;
+    Texture2D PlantsShadows;
+    Texture2D Player;
+    Texture2D Props;
+    Texture2D PropsShadow;
+    Texture2D Structure;
+    Texture2D TilesetGrass;
+    Texture2D TilesetStone;
+    Texture2D TilesetWall;
+
+public:
+    void update() override;
+    void draw() override;
+
+    WorldEditor(SceneManager *manager) : Scene(manager) {
+        startScene();
     }
 };
 
