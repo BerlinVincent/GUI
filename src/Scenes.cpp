@@ -148,7 +148,7 @@ void WorldScene::draw() {
                     .height = tileSize
                 };
 
-                DrawTexturePro(m_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
+                DrawTexturePro(m_tileMap[y][x].m_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
             }
         }
     }
@@ -182,7 +182,7 @@ void WorldScene::draw() {
         .height = tileSize * 2
     };
 
-    DrawTexturePro(m_playerSprite, src, dest, (Vector2){0, 0}, 0, WHITE);
+    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, WHITE);
 
     // select player sprite based on last move direction
 
@@ -221,7 +221,7 @@ void WorldScene::draw() {
 
     // draw Player
 
-    DrawTexturePro(m_playerSprite, src, dest, (Vector2){0, 0}, 0, WHITE);
+    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, WHITE);
 
     EndMode2D();
 
