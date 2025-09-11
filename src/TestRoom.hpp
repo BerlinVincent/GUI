@@ -11,11 +11,11 @@ std::vector<std::vector<Tile>> TestRoom() {
         {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 2)},
         {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 2)},
         {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(0, 5), Tile(2, 1), Tile(2, 1), Tile(2, 1), Tile(2, 1), Tile(2, 2)},
-        {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 2)},
-        {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 2)},
-        {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 2)},
-        {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 2)},
-        {Tile(2, 0), Tile(2, 1), Tile(2, 1), Tile(2, 1), Tile(2, 2)}
+        {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 2), Tile(-1, -1), Tile(-1, -1),  Tile(-1, -1),  Tile(-1, -1),  Tile(-1, -1)},
+        {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 2), Tile(-1, -1), Tile(0, 0),  Tile(0, 1),  Tile(0, 2),  Tile(-1, -1)},
+        {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(6, 3), Tile(3, 1), Tile(6, 5),  Tile(1, 1),  Tile(1, 2),  Tile(-1, -1)},
+        {Tile(1, 0), Tile(1, 1), Tile(1, 1), Tile(1, 1), Tile(1, 2), Tile(-1, -1), Tile(2, 0),  Tile(2, 1),  Tile(2, 2),  Tile(-1, -1)},
+        {Tile(2, 0), Tile(2, 1), Tile(2, 1), Tile(2, 1), Tile(2, 2), Tile(-1, -1), Tile(-1, -1),  Tile(-1, -1),  Tile(-1, -1),  Tile(-1, -1)}
     };
 }
 

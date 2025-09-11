@@ -134,20 +134,22 @@ void WorldScene::draw() {
         for ( int x = 0; x < m_tileMap[y].size(); x++) {
             Vector2 tileIndex = m_tileMap[y][x].m_tileSetCoordinates;
 
-            src = {
-                .left = (int)tileIndex.x * tileSize,
-                .top = (int)tileIndex.y * tileSize,
-                .width = tileSize,
-                .height = tileSize
-            };
-            dest = {
-                .left = y * tileSize,
-                .top = x * tileSize,
-                .width = tileSize,
-                .height = tileSize
-            };
+            if (tileIndex.x + tileIndex.y >= 0) {
+                src = {
+                    .left = (int)tileIndex.x * tileSize,
+                    .top = (int)tileIndex.y * tileSize,
+                    .width = tileSize,
+                    .height = tileSize
+                };
+                dest = {
+                    .left = y * tileSize,
+                    .top = x * tileSize,
+                    .width = tileSize,
+                    .height = tileSize
+                };
 
-            DrawTexturePro(m_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
+                DrawTexturePro(m_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
+            }
         }
     }
     
@@ -227,10 +229,10 @@ void WorldScene::draw() {
 
     DrawRectangle(10, 10, 100, 75, Fade(DARKGRAY, 0.8f));
 
-    DrawText(std::to_string((int)playerPos.x / tileSize).c_str(), 15, 15, 20, YELLOW);
-    DrawText(std::to_string((int)playerPos.y / tileSize).c_str(), 15, 35, 20, YELLOW);
-    DrawText(std::to_string((int)nextPos.x / tileSize).c_str(), 40, 15, 20, YELLOW);
-    DrawText(std::to_string((int)nextPos.y / tileSize).c_str(), 40, 35, 20, YELLOW);
+    DrawText(std::to_string((int)playerPos.x).c_str(), 15, 15, 20, YELLOW);
+    DrawText(std::to_string((int)playerPos.y).c_str(), 15, 35, 20, YELLOW);
+    DrawText(std::to_string((int)nextPos.x).c_str(), 70, 15, 20, YELLOW);
+    DrawText(std::to_string((int)nextPos.y).c_str(), 70, 35, 20, YELLOW);
     DrawText(std::to_string(lastMoveDirection).c_str(), 15, 60, 20, YELLOW);
 
     EndDrawing();

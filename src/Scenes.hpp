@@ -88,7 +88,7 @@ public:
     void update() override;
     void draw() override;
 
-    bool isWalkable(int x, int y) {
+    bool isWalkable(int y, int x) {
         x = x / tileSize;
         y = y / tileSize;
         // out of bounds coordinates
