@@ -69,16 +69,8 @@ class WorldScene : public Scene {
 private:
     // the map in tiles
     std::vector<std::vector<Tile>> m_tileMap;
-    // the set of textures tiles render as
-    Texture2D t_Plants;
-    Texture2D t_PlantsShadows;
+    // player sprite
     Texture2D t_Player;
-    Texture2D t_Props;
-    Texture2D t_PropsShadow;
-    Texture2D t_Structure;
-    Texture2D t_Grass;
-    Texture2D t_Stone;
-    Texture2D t_Walls;
     int tileSize;
     
     Camera2D camera;
@@ -112,21 +104,11 @@ public:
         : Scene(manager), tileSize(32) {
         startScene();
 
+        t_Player = LoadTexture("../../Textures/Player.png");
+
         // initialize a standard map
 
         m_tileMap = std::vector<std::vector<Tile>>(15, std::vector<Tile>(15, Tile(-1, -1)));
-
-        // load the textures
-
-        t_Plants = LoadTexture("../../Textures/t_Plants.png");
-        t_PlantsShadows = LoadTexture(("../../Textures/t_Plants Shadows.png"));
-        t_Player = LoadTexture(("../../Textures/Player.png"));
-        t_Props = LoadTexture(("../../Textures/Props.png"));
-        t_PropsShadow = LoadTexture(("../../Textures/Props Shadow.png"));
-        t_Structure = LoadTexture(("../../Textures/Structure.png"));
-        t_Grass = LoadTexture(("../../Textures/Tileset Grass.png"));
-        t_Stone = LoadTexture(("../../Textures/Tileset Stone.png"));
-        t_Walls = LoadTexture(("../../Textures/Tileset Walls.png"));
 
         // initialize the position data
 
@@ -148,8 +130,44 @@ public:
         : WorldScene(manager) {
         m_tileMap = tileMap;
     }
+};
 
-    ~WorldScene() {
+class WorldEditor : public WorldScene {
+
+private:
+    std::vector<std::vector<Tile>> m_tileMap;
+    Tile m_currentTile;
+    // the set of textures tiles render as
+    Texture2D t_Plants;
+    Texture2D t_PlantsShadows;
+    Texture2D t_Player;
+    Texture2D t_Props;
+    Texture2D t_PropsShadow;
+    Texture2D t_Structure;
+    Texture2D t_Grass;
+    Texture2D t_Stone;
+    Texture2D t_Walls;
+
+public:
+    void update() override;
+    void draw() override;
+
+    WorldEditor(SceneManager *manager) : WorldScene(manager) {
+
+        // load the textures
+
+        t_Plants = LoadTexture("../../Textures/t_Plants.png");
+        t_PlantsShadows = LoadTexture(("../../Textures/t_Plants Shadows.png"));
+        t_Player = LoadTexture(("../../Textures/Player.png"));
+        t_Props = LoadTexture(("../../Textures/Props.png"));
+        t_PropsShadow = LoadTexture(("../../Textures/Props Shadow.png"));
+        t_Structure = LoadTexture(("../../Textures/Structure.png"));
+        t_Grass = LoadTexture(("../../Textures/Tileset Grass.png"));
+        t_Stone = LoadTexture(("../../Textures/Tileset Stone.png"));
+        t_Walls = LoadTexture(("../../Textures/Tileset Walls.png"));
+    }
+
+    ~WorldEditor() {
         UnloadTexture(t_Plants);
         UnloadTexture(t_PlantsShadows);
         UnloadTexture(t_Player);
@@ -159,21 +177,6 @@ public:
         UnloadTexture(t_Grass);
         UnloadTexture(t_Stone);
         UnloadTexture(t_Walls);
-    }
-};
-
-class WorldEditor : public WorldScene {
-
-private:
-    std::vector<std::vector<Tile>> m_tileMap;
-    Tile m_currentTile;
-
-public:
-    void update() override;
-    void draw() override;
-
-    WorldEditor(SceneManager *manager) : WorldScene(manager) {
-
     }
 };
 
