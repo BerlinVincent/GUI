@@ -130,6 +130,31 @@ public:
     }
 };
 
+class WorldEditor : public Scene {
+
+private:
+    std::vector<std::vector<Tile>> m_tileMap;
+    Tile m_currentTile;
+
+    Texture2D Plants;
+    Texture2D PlantsShadows;
+    Texture2D Player;
+    Texture2D Props;
+    Texture2D PropsShadow;
+    Texture2D Structure;
+    Texture2D TilesetGrass;
+    Texture2D TilesetStone;
+    Texture2D TilesetWall;
+
+public:
+    void update() override;
+    void draw() override;
+
+    WorldEditor(SceneManager *manager) : Scene(manager) {
+        startScene();
+    }
+};
+
 struct MainMenu : public MenuScene {
     MainMenu(SceneManager *manager);
 };
