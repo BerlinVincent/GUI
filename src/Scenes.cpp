@@ -380,6 +380,48 @@ void WorldEditor::draw() {
 
     EndMode2D();
 
+    // draw editor UI
+    
+    Vector2 mousePos = GetMousePosition();
+    bool click = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+
+    int width = GetScreenWidth();
+    int height = GetScreenHeight();
+    float padding = 0.2;
+    float border = 0.1;
+
+    // left sidebar
+
+    DrawRectangle(0, 0, GetScreenWidth() / 6, GetScreenHeight() / 4 * 3, GRAY);
+    DrawRectangle(5, 5, GetScreenWidth() / 6 - 10, GetScreenHeight() / 4 * 3, LIGHTGRAY);
+
+    Rect box{
+        .left = 10,
+        .top = 10,
+        .width = GetScreenWidth() / 6 - 20,
+        .height = GetScreenHeight() / 24 * 3 - 20
+    };
+
+    int deltaY = box.height * (1 + 0.2);
+
+    for (int i = 0; i < (int)ui_leftSideBar.size(); i++) {
+        ui_leftSideBar[i].draw(box, false);
+
+        if (CheckCollisionPointRec(mousePos, box)) {
+            if (mousePos.x != lastMouse.x || mousePos.y != lastMouse.y) {
+                lastMouse = mousePos;
+            }
+            if (click)
+                ui_leftSideBar[i].handleSelect();
+        }
+        box.top += deltaY;
+    }
+
+    // bottom bar
+
+    DrawRectangle(0, GetScreenHeight() / 4 * 3, GetScreenWidth(), GetScreenHeight() / 4, GRAY);
+    DrawRectangle(5, GetScreenHeight() / 4 * 3 + 5, GetScreenWidth() - 10, GetScreenHeight() / 4 - 10, LIGHTGRAY);
+
     // draw debug info
 
     DrawRectangle(10, 10, 100, 75, Fade(DARKGRAY, 0.8f));
@@ -389,8 +431,6 @@ void WorldEditor::draw() {
     DrawText(std::to_string((int)nextPos.x).c_str(), 70, 15, 20, YELLOW);
     DrawText(std::to_string((int)nextPos.y).c_str(), 70, 35, 20, YELLOW);
     DrawText(std::to_string(lastMoveDirection).c_str(), 15, 60, 20, YELLOW);
-
-    DrawRectangle(0, GetScreenHeight() / 4 * 3, GetScreenWidth(), GetScreenHeight() / 4 * 3, GRAY);
 
     EndDrawing();
 }

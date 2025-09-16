@@ -145,6 +145,11 @@ protected:
     Texture2D t_Grass;
     Texture2D t_Stone;
     Texture2D t_Walls;
+    // editor menu elements
+    std::vector<Button> ui_leftSideBar;
+    std::vector<Rectangle> ui_bottomBar;
+    // position of the cursor
+    Vector2 lastMouse;
 
 public:
     void update() override;
@@ -171,6 +176,15 @@ public:
         t_Grass = LoadTexture(("../../Textures/Tileset Grass.png"));
         t_Stone = LoadTexture(("../../Textures/Tileset Stone.png"));
         t_Walls = LoadTexture(("../../Textures/Tileset Walls.png"));
+
+        ui_leftSideBar = {
+            Button("Plants", [](){}, Align::center),
+            Button("Props", [](){}, Align::center),
+            Button("Structure", [](){}, Align::center),
+            Button("Grass", [](){}, Align::center),
+            Button("Stone", [](){}, Align::center),
+            Button("Walls", [](){}, Align::center)
+        };
     }
 
     ~WorldEditor() {
