@@ -16,10 +16,8 @@ class SceneManager;
  */
 class Scene {
 
-private:
-    bool m_running;                     // wether scene is supposed to be running or not
-
 protected:
+    bool m_running;                     // wether scene is supposed to be running or not
     SceneManager *m_manager = nullptr;  // back-reference to this scene's manager
     
 public:
@@ -41,7 +39,7 @@ public:
 
 class MenuScene : public Scene {
 
-private:
+protected:
     std::string m_menuTitle;
     std::vector<Element *> m_elements;
 
@@ -66,7 +64,7 @@ public:
 
 class WorldScene : public Scene {
 
-private:
+protected:
     // the map in tiles
     std::vector<std::vector<Tile>> m_tileMap;
     // player sprite
@@ -134,8 +132,8 @@ public:
 
 class WorldEditor : public WorldScene {
 
-private:
-    std::vector<std::vector<Tile>> m_tileMap;
+protected:
+    // std::vector<std::vector<Tile>> m_tileMap;
     Tile m_currentTile;
     // the set of textures tiles render as
     Texture2D t_Plants;
@@ -151,6 +149,14 @@ private:
 public:
     void update() override;
     void draw() override;
+
+    bool isWalkable(int x, int y) {
+        x = x / tileSize;
+        y = y / tileSize;
+
+        if (x < 0 || x >= m_tileMap[y].size() || y < 0 || y >= m_tileMap.size()) return false;
+        return true;        
+    }
 
     WorldEditor(SceneManager *manager) : WorldScene(manager) {
 
