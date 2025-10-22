@@ -3,7 +3,7 @@ file(GLOB_RECURSE SRC_FILES *.cpp)
 
 # Create library from source files (excluding main.cpp) and make available here
 list(FILTER SRC_FILES EXCLUDE REGEX ".*/main\\.cpp$")
-add_library(SourceLib ${SRC_FILES})
+add_library(SourceLib STATIC ${SRC_FILES})
 
 # Include libraries here
 target_include_directories(SourceLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
