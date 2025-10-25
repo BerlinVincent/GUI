@@ -38,9 +38,9 @@ struct Tile {
 
     Tile() : m_tileSet(LoadTexture("../../Textures/Tileset Stone.png")), m_tileSetCoordinates({-1, -1}) {}
     Tile(Vector2 coords) : m_tileSetCoordinates(coords) { m_tileSet = LoadTexture("../../Textures/Tileset Stone.png"); }
-    Tile(int x, int y) : m_tileSetCoordinates(Vector2((float)x, (float) y)) { m_tileSet = LoadTexture("../../Textures/Tileset Stone.png"); }
+    Tile(int x, int y) : m_tileSetCoordinates({(float)x, (float)y}) { m_tileSet = LoadTexture("../../Textures/Tileset Stone.png"); }
     Tile(Vector2 coords, Texture tileset) : m_tileSetCoordinates(coords), m_tileSet(tileset) {}
-    Tile(int x, int y, Texture tileset) : m_tileSetCoordinates(Vector2((float)x, (float) y)), m_tileSet(tileset) {}
+    Tile(int x, int y, Texture tileset) : m_tileSetCoordinates({(float)x, (float)y}), m_tileSet(tileset) {}
 };
 
 /**

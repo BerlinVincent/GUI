@@ -110,7 +110,7 @@ void WorldScene::update() {
     else // player movement
     {
         Vector2 delta = {nextPos.x - playerPos.x, nextPos.y - playerPos.y};
-        float dist = sqrtf(delta.x * delta.x + delta.y * delta.y);
+        float dist = sqrtf(powf(delta.x, 2) + powf(delta.y, 2));
 
         if (dist <= moveSpeed) playerPos = nextPos;
         else {
@@ -272,7 +272,7 @@ void WorldEditor::update() {
     else // player movement
     {
         Vector2 delta = {nextPos.x - playerPos.x, nextPos.y - playerPos.y};
-        float dist = sqrtf(delta.x * delta.x + delta.y * delta.y);
+        float dist = sqrtf(powf(delta.x, 2) + powf(delta.y, 2));
 
         if (dist <= moveSpeed) playerPos = nextPos;
         else {
