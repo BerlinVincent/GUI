@@ -287,15 +287,29 @@ void WorldEditor::update() {
 
 void WorldEditor::draw() {
     BeginDrawing();
+
+    int viewX = GetScreenWidth() / 6;
+    int viewY = 0;
+    int viewWidth = GetScreenWidth() - viewX;
+    int viewHeight = GetScreenHeight() / 4 * 3;
+    
+    static RenderTexture2D worldTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+
+    BeginTextureMode(worldTexture);
     ClearBackground(BLACK);
+    
+    camera.target.x = roundf(camera.target.x);
+    camera.target.y = roundf(camera.target.y);
+
     BeginMode2D(camera);
     
     // Draw underlying grid
     for (int i = 0; i <= m_tileMap.size(); i++) {
-        DrawLine(i * tileSize, 0, i * tileSize, m_tileMap.size() * tileSize, GREEN);
-        DrawLine(0, i * tileSize, m_tileMap.size() * tileSize, i * tileSize, GREEN);
+        float pos = (float)i * tileSize + 0.5f;
+        DrawLineEx({pos, 0.5f}, {pos, (float)m_tileMap.size() * tileSize + 0.5f}, 1.0f, GREEN);
+        DrawLineEx({0.5f, pos}, {(float)m_tileMap.size() * tileSize + 0.5f, pos}, 1.0f, GREEN);
     }
-
+    
     Rect src, dest;
 
     for (int y = 0; y < m_tileMap.size(); y++) {
@@ -379,6 +393,15 @@ void WorldEditor::draw() {
     DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, WHITE);
 
     EndMode2D();
+    EndTextureMode();
+
+    BeginScissorMode(viewX, viewY, viewWidth, viewHeight);
+
+    Rectangle srcRec = {0, 0, (float)worldTexture.texture.width, -(float)worldTexture.texture.height};
+    Rectangle destRec = { (float)viewX, (float)viewY, (float)viewWidth, (float)viewHeight};
+    DrawTexturePro(worldTexture.texture, srcRec, destRec, (Vector2){0, 0}, 0, WHITE);
+
+    EndScissorMode();
 
     // draw editor UI
     
@@ -403,17 +426,18 @@ void WorldEditor::draw() {
     };
 
     int deltaY = box.height * (1 + 0.2);
+    bool highlight = false;
 
     for (int i = 0; i < (int)ui_leftSideBar.size(); i++) {
-        ui_leftSideBar[i].draw(box, false);
-
         if (CheckCollisionPointRec(mousePos, box)) {
+            highlight = true;
             if (mousePos.x != lastMouse.x || mousePos.y != lastMouse.y) {
                 lastMouse = mousePos;
             }
-            if (click)
-                ui_leftSideBar[i].handleSelect();
+            if (click) ui_leftSideBar[i].handleSelect();
         }
+        ui_leftSideBar[i].draw(box, highlight);
+        highlight = false;
         box.top += deltaY;
     }
 
