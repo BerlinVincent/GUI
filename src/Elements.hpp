@@ -11,6 +11,10 @@ enum class Align {
     left, center, right
 };
 
+enum TextFontSize {
+    tiny, small, medium, large, giant
+};
+
 /**
  * @brief A storage wrapper for rectangle features
  * @author TheRobotFox
@@ -44,8 +48,12 @@ struct Tile {
  * @returns The font size for the text
  * @author BerlinVincent
  */
-static auto font_size() -> int {
-    return GetFontDefault().baseSize * 8 *  GetScreenHeight() / SCREEN_HEIGHT;
+static auto font_size(TextFontSize tfSize = medium) -> int {
+    if (tfSize == tiny) return GetFontDefault().baseSize * 2 * GetScreenHeight() / SCREEN_HEIGHT;
+    else if (tfSize == small) return GetFontDefault().baseSize * 4 * GetScreenHeight() / SCREEN_HEIGHT;
+    else if (tfSize == large) return GetFontDefault().baseSize * 16 * GetScreenHeight() / SCREEN_HEIGHT;
+    else if (tfSize == giant) return GetFontDefault().baseSize * 32 * GetScreenHeight() / SCREEN_HEIGHT;
+    else return GetFontDefault().baseSize * 8 * GetScreenHeight() / SCREEN_HEIGHT;
 }
 
 /**
@@ -104,6 +112,9 @@ class Button : public Element {
     // Wether the button is left, center or right aligned
     Align m_alignment;
 
+    // How large the Button should draw its label text
+    TextFontSize m_tfSize;
+
 	public:
 
     auto getLabel() -> std::string {
@@ -157,5 +168,5 @@ class Button : public Element {
 	 * @param fn The button's `m_command`
 	 */
     template <typename Fn>
-    Button(std::string label, Fn fn, Align al) : m_label(std::move(label)), m_command(fn), m_alignment(al) {}
+    Button(std::string label, Fn fn, Align al, TextFontSize tfs = medium) : m_label(std::move(label)), m_command(fn), m_alignment(al), m_tfSize(tfs) {}
 };

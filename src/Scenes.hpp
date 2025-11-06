@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <optional>
 
 #include "Elements.hpp"
 
@@ -178,12 +179,12 @@ public:
         t_Walls =           LoadTexture("../../Textures/Tileset Walls.png");
 
         ui_leftSideBar = {
-            Button("Plants",    [](){}, Align::center),
-            Button("Props",     [](){}, Align::center),
-            Button("Structure", [](){}, Align::center),
-            Button("Grass",     [](){}, Align::center),
-            Button("Stone",     [](){}, Align::center),
-            Button("Walls",     [](){}, Align::center)
+            Button("Plants",    [](){}, Align::center, TextFontSize::small),
+            Button("Props",     [](){}, Align::center, TextFontSize::small),
+            Button("Structure", [](){}, Align::center, TextFontSize::small),
+            Button("Grass",     [](){}, Align::center, TextFontSize::small),
+            Button("Stone",     [](){}, Align::center, TextFontSize::small),
+            Button("Walls",     [](){}, Align::center, TextFontSize::small)
         };
     }
 
