@@ -288,6 +288,7 @@ void WorldEditor::update() {
 void WorldEditor::draw() {
     BeginDrawing();
 
+    // measurements for the "game window"
     int viewX = GetScreenWidth() / 6;
     int viewY = 0;
     int viewWidth = GetScreenWidth() - viewX;
@@ -298,20 +299,22 @@ void WorldEditor::draw() {
     BeginTextureMode(worldTexture);
     ClearBackground(BLACK);
     
+    // this helps with subpixel errors
     camera.target.x = roundf(camera.target.x);
     camera.target.y = roundf(camera.target.y);
 
     BeginMode2D(camera);
     
-    // Draw underlying grid
+    // Draw underlying grid, accounts for subpixel errors
     for (int i = 0; i <= m_tileMap.size(); i++) {
         float pos = (float)i * tileSize + 0.5f;
         DrawLineEx({pos, 0.5f}, {pos, (float)m_tileMap.size() * tileSize + 0.5f}, 1.0f, GREEN);
         DrawLineEx({0.5f, pos}, {(float)m_tileMap.size() * tileSize + 0.5f, pos}, 1.0f, GREEN);
     }
-    
+
     Rect src, dest;
 
+    // draw all tiles
     for (int y = 0; y < m_tileMap.size(); y++) {
         for ( int x = 0; x < m_tileMap[y].size(); x++) {
             Vector2 tileIndex = m_tileMap[y][x].m_tileSetCoordinates;
@@ -395,6 +398,7 @@ void WorldEditor::draw() {
     EndMode2D();
     EndTextureMode();
 
+    // draw the "game window" into the right place in the UI
     BeginScissorMode(viewX, viewY, viewWidth, viewHeight);
 
     Rectangle srcRec = {0, 0, (float)worldTexture.texture.width, -(float)worldTexture.texture.height};
