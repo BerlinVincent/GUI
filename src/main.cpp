@@ -1,4 +1,5 @@
 #include "SceneManager.hpp"
+#include <stdio.h>
 
 auto main(int argc, char *argv[]) -> int {
     SceneManager sceneManager;
