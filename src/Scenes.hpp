@@ -68,8 +68,6 @@ class WorldScene : public Scene {
 protected:
     // the map in tiles
     std::vector<std::vector<Tile>> m_tileMap;
-    // player sprite
-    Texture2D t_Player;
     int tileSize;
     
     Camera2D camera;
@@ -81,6 +79,17 @@ protected:
     float moveSpeed;
     // last direction the player moved in
     int lastMoveDirection;
+
+    // the set of textures tiles render as
+    Texture2D t_Plants;
+    Texture2D t_PlantsShadows;
+    Texture2D t_Player;
+    Texture2D t_Props;
+    Texture2D t_PropsShadow;
+    Texture2D t_Structure;
+    Texture2D t_Grass;
+    Texture2D t_Stone;
+    Texture2D t_Walls;
 
 public:
     void update() override;
@@ -103,11 +112,21 @@ public:
         : Scene(manager), tileSize(32) {
         startScene();
 
-        t_Player = LoadTexture("../../Textures/Player.png");
+        // load the textures
+
+        t_Plants = LoadTexture("../../Textures/t_Plants.png");
+        t_PlantsShadows = LoadTexture(("../../Textures/t_Plants Shadows.png"));
+        t_Player = LoadTexture(("../../Textures/Player.png"));
+        t_Props = LoadTexture(("../../Textures/Props.png"));
+        t_PropsShadow = LoadTexture(("../../Textures/Props Shadow.png"));
+        t_Structure = LoadTexture(("../../Textures/Structure.png"));
+        t_Grass = LoadTexture(("../../Textures/Tileset Grass.png"));
+        t_Stone = LoadTexture(("../../Textures/Tileset Stone.png"));
+        t_Walls = LoadTexture(("../../Textures/Tileset Walls.png"));
 
         // initialize a standard map
 
-        m_tileMap = std::vector<std::vector<Tile>>(15, std::vector<Tile>(15, Tile(-1, -1)));
+        m_tileMap = std::vector<std::vector<Tile>>(15, std::vector<Tile>(15, Tile(t_Stone)));
 
         // initialize the position data
 
@@ -129,6 +148,18 @@ public:
         : WorldScene(manager) {
         m_tileMap = tileMap;
     }
+
+    ~WorldScene() {
+        UnloadTexture(t_Plants);
+        UnloadTexture(t_PlantsShadows);
+        UnloadTexture(t_Player);
+        UnloadTexture(t_Props);
+        UnloadTexture(t_PropsShadow);
+        UnloadTexture(t_Structure);
+        UnloadTexture(t_Grass);
+        UnloadTexture(t_Stone);
+        UnloadTexture(t_Walls);
+    }
 };
 
 class WorldEditor : public WorldScene {
@@ -136,16 +167,6 @@ class WorldEditor : public WorldScene {
 protected:
     // std::vector<std::vector<Tile>> m_tileMap;
     Tile m_currentTile;
-    // the set of textures tiles render as
-    Texture2D t_Plants;
-    Texture2D t_PlantsShadows;
-    Texture2D t_Player;
-    Texture2D t_Props;
-    Texture2D t_PropsShadow;
-    Texture2D t_Structure;
-    Texture2D t_Grass;
-    Texture2D t_Stone;
-    Texture2D t_Walls;
     // editor menu elements
     std::vector<Button> ui_leftSideBar;
     std::vector<Rectangle> ui_bottomBar;
@@ -166,38 +187,14 @@ public:
 
     WorldEditor(SceneManager *manager) : WorldScene(manager) {
 
-        // load the textures
-
-        t_Plants =          LoadTexture("../../Textures/t_Plants.png");
-        t_PlantsShadows =   LoadTexture("../../Textures/t_Plants Shadows.png");
-        t_Player =          LoadTexture("../../Textures/Player.png");
-        t_Props =           LoadTexture("../../Textures/Props.png");
-        t_PropsShadow =     LoadTexture("../../Textures/Props Shadow.png");
-        t_Structure =       LoadTexture("../../Textures/Structure.png");
-        t_Grass =           LoadTexture("../../Textures/Tileset Grass.png");
-        t_Stone =           LoadTexture("../../Textures/Tileset Stone.png");
-        t_Walls =           LoadTexture("../../Textures/Tileset Walls.png");
-
         ui_leftSideBar = {
-            Button("Plants",    [](){}, Align::center, TextFontSize::small),
-            Button("Props",     [](){}, Align::center, TextFontSize::small),
-            Button("Struct",    [](){}, Align::center, TextFontSize::small),
-            Button("Grass",     [](){}, Align::center, TextFontSize::small),
-            Button("Stone",     [](){}, Align::center, TextFontSize::small),
-            Button("Walls",     [](){}, Align::center, TextFontSize::small)
+            Button("Plants", [](){}, Align::center),
+            Button("Props", [](){}, Align::center),
+            Button("Structure", [](){}, Align::center),
+            Button("Grass", [](){}, Align::center),
+            Button("Stone", [](){}, Align::center),
+            Button("Walls", [](){}, Align::center)
         };
-    }
-
-    ~WorldEditor() {
-        UnloadTexture(t_Plants);
-        UnloadTexture(t_PlantsShadows);
-        UnloadTexture(t_Player);
-        UnloadTexture(t_Props);
-        UnloadTexture(t_PropsShadow);
-        UnloadTexture(t_Structure);
-        UnloadTexture(t_Grass);
-        UnloadTexture(t_Stone);
-        UnloadTexture(t_Walls);
     }
 };
 

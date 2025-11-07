@@ -182,7 +182,7 @@ void WorldScene::draw() {
         .height = tileSize * 2
     };
 
-    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, WHITE);
+    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, {255, 255, 255, 127});
 
     // select player sprite based on last move direction
 
@@ -354,7 +354,7 @@ void WorldEditor::draw() {
         .height = tileSize * 2
     };
 
-    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, WHITE);
+    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, {255, 255, 255, 127});
 
     // select player sprite based on last move direction
 
@@ -464,7 +464,7 @@ void WorldEditor::draw() {
 }
 
 MainMenu::MainMenu(SceneManager *manager) : MenuScene(manager, "Main Menu", {
-    new Button("Start Game", [this](){ m_manager->pushScene<WorldScene>(maps::TestRoom()); }, Align::center),
+    new Button("Start Game", [this](){ m_manager->pushScene<WorldScene>(maps::TestRoom2()); }, Align::center),
     new Button("Options", [](){}, Align::center),
     new Button("Create World", [this](){ m_manager->pushScene<WorldEditor>(); }, Align::center),
     new Button("Exit", [this](){ killScene(); }, Align::center)
