@@ -1,3 +1,5 @@
 .vscode
 build
 Notizen.md
+.idea
+cmake-build-debug
