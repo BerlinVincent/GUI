@@ -131,7 +131,7 @@ void WorldScene::draw() {
     Rect src, dest;
 
     for (int y = 0; y < m_tileMap.size(); y++) {
-        for ( int x = 0; x < m_tileMap[y].size(); x++) {
+        for (int x = 0; x < m_tileMap[y].size(); x++) {
             Vector2 tileIndex = m_tileMap[y][x].m_tileSetCoordinates;
 
             if (tileIndex.x + tileIndex.y >= 0) {

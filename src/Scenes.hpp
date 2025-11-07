@@ -181,7 +181,7 @@ public:
         ui_leftSideBar = {
             Button("Plants",    [](){}, Align::center, TextFontSize::small),
             Button("Props",     [](){}, Align::center, TextFontSize::small),
-            Button("Structure", [](){}, Align::center, TextFontSize::small),
+            Button("Struct",    [](){}, Align::center, TextFontSize::small),
             Button("Grass",     [](){}, Align::center, TextFontSize::small),
             Button("Stone",     [](){}, Align::center, TextFontSize::small),
             Button("Walls",     [](){}, Align::center, TextFontSize::small)
