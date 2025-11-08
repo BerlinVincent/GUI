@@ -63,11 +63,11 @@ public:
     }
 
     auto run() -> void {
-        while (!empty() && !WindowShouldClose()) {  // check if there are scenes
+        while (!empty() && !WindowShouldClose()) {          // check if there are scenes
             Scene* current = getCurrentScene();
 
-            update();   // update logic
-            draw();     // draw visuals
+            update();                                       // update logic
+            draw();                                         // draw visuals
 
             if (current->running() == false) popScene();    // pop scene if it's not supposed to run
         }

@@ -114,15 +114,15 @@ public:
 
         // load the textures
 
-        t_Plants = LoadTexture("../../Textures/t_Plants.png");
-        t_PlantsShadows = LoadTexture(("../../Textures/t_Plants Shadows.png"));
-        t_Player = LoadTexture(("../../Textures/Player.png"));
-        t_Props = LoadTexture(("../../Textures/Props.png"));
-        t_PropsShadow = LoadTexture(("../../Textures/Props Shadow.png"));
-        t_Structure = LoadTexture(("../../Textures/Structure.png"));
-        t_Grass = LoadTexture(("../../Textures/Tileset Grass.png"));
-        t_Stone = LoadTexture(("../../Textures/Tileset Stone.png"));
-        t_Walls = LoadTexture(("../../Textures/Tileset Walls.png"));
+        t_Plants =          LoadTexture("../../Textures/t_Plants.png");
+        t_PlantsShadows =   LoadTexture(("../../Textures/t_Plants Shadows.png"));
+        t_Player =          LoadTexture(("../../Textures/Player.png"));
+        t_Props =           LoadTexture(("../../Textures/Props.png"));
+        t_PropsShadow =     LoadTexture(("../../Textures/Props Shadow.png"));
+        t_Structure =       LoadTexture(("../../Textures/Structure.png"));
+        t_Grass =           LoadTexture(("../../Textures/Tileset Grass.png"));
+        t_Stone =           LoadTexture(("../../Textures/Tileset Stone.png"));
+        t_Walls =           LoadTexture(("../../Textures/Tileset Walls.png"));
 
         // initialize a standard map
 
@@ -170,6 +170,7 @@ protected:
     // editor menu elements
     std::vector<Button> ui_leftSideBar;
     std::vector<Rectangle> ui_bottomBar;
+    std::vector<Tile> ui_tilePalette;
     // position of the cursor
     Vector2 lastMouse;
 
@@ -188,12 +189,12 @@ public:
     WorldEditor(SceneManager *manager) : WorldScene(manager) {
 
         ui_leftSideBar = {
-            Button("Plants", [](){}, Align::center),
-            Button("Props", [](){}, Align::center),
-            Button("Structure", [](){}, Align::center),
-            Button("Grass", [](){}, Align::center),
-            Button("Stone", [](){}, Align::center),
-            Button("Walls", [](){}, Align::center)
+            Button("Plants",    [](){}, Align::center, TextFontSize::small),
+            Button("Props",     [](){}, Align::center, TextFontSize::small),
+            Button("Struct",    [](){}, Align::center, TextFontSize::small),
+            Button("Grass",     [](){}, Align::center, TextFontSize::small),
+            Button("Stone",     [](){}, Align::center, TextFontSize::small),
+            Button("Walls",     [](){}, Align::center, TextFontSize::small)
         };
     }
 };

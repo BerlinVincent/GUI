@@ -316,7 +316,7 @@ void WorldEditor::draw() {
 
     // draw all tiles
     for (int y = 0; y < m_tileMap.size(); y++) {
-        for ( int x = 0; x < m_tileMap[y].size(); x++) {
+        for (int x = 0; x < m_tileMap[y].size(); x++) {
             Vector2 tileIndex = m_tileMap[y][x].m_tileSetCoordinates;
 
             if (tileIndex.x + tileIndex.y >= 0) {
@@ -449,6 +449,12 @@ void WorldEditor::draw() {
 
     DrawRectangle(0, GetScreenHeight() / 4 * 3, GetScreenWidth(), GetScreenHeight() / 4, GRAY);
     DrawRectangle(5, GetScreenHeight() / 4 * 3 + 5, GetScreenWidth() - 10, GetScreenHeight() / 4 - 10, LIGHTGRAY);
+    
+    // Tile Palette
+    
+    for (size_t i = 0; i < ui_tilePalette.size(); i++) {
+        
+    }
 
     // draw debug info
 
