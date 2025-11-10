@@ -86,7 +86,7 @@ class WorldScene : public Scene {
     int lastMoveDirection;
     
     // the set of textures tiles render as
-    Texture2D t_Player;
+    Texture2D * t_Player;
     std::unordered_map<std::string, Texture2D> m_textureCache;
     
 public:
@@ -143,7 +143,7 @@ public:
     }
 
     ~WorldScene() {
-        UnloadTexture(t_Player);
+        // unload cached textures
         for (auto &[path, texture] : m_textureCache) {
             UnloadTexture(texture);
         }

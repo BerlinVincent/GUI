@@ -77,22 +77,26 @@ void MenuScene::draw() {
 }
 
 void WorldScene::preload_textures() {
+    // we only use cleaned up stuff
     m_textureCache.clear();
 
+    // load the player texture
     m_textureCache["Player"] = LoadTexture("../../Textures/Player.png");
-    t_Player = m_textureCache["Player"];
+    t_Player = &m_textureCache["Player"];
 
+    // load the textures that tiles use
     for (auto &row : m_tileMap) {
         for (auto &tile :row) {
             const std::string &path = tile.f_texturePath;
 
             if (path.empty()) continue;
 
+            // if a texture isn't cached yet, load it into cache
             if (!m_textureCache.contains(path)) {
                 m_textureCache[path] = LoadTexture(path.c_str());
-
             }
         
+            // reference the correct texture for every tile
             tile.m_tileSet = &m_textureCache[path];
         }
     }
@@ -204,7 +208,7 @@ void WorldScene::draw() {
         .height = tileSize * 2
     };
 
-    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, {255, 255, 255, 127});
+    DrawTexturePro(*t_Player, src, dest, (Vector2){0, 0}, 0, {255, 255, 255, 127});
 
     // select player sprite based on last move direction
 
@@ -243,7 +247,7 @@ void WorldScene::draw() {
 
     // draw Player
 
-    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, WHITE);
+    DrawTexturePro(*t_Player, src, dest, (Vector2){0, 0}, 0, WHITE);
 
     EndMode2D();
 
@@ -376,7 +380,7 @@ void WorldEditor::draw() {
         .height = tileSize * 2
     };
 
-    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, {255, 255, 255, 127});
+    DrawTexturePro(*t_Player, src, dest, (Vector2){0, 0}, 0, {255, 255, 255, 127});
 
     // select player sprite based on last move direction
 
@@ -415,7 +419,7 @@ void WorldEditor::draw() {
 
     // draw Player
 
-    DrawTexturePro(t_Player, src, dest, (Vector2){0, 0}, 0, WHITE);
+    DrawTexturePro(*t_Player, src, dest, (Vector2){0, 0}, 0, WHITE);
 
     EndMode2D();
     EndTextureMode();
