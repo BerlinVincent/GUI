@@ -33,15 +33,16 @@ struct Tile {
     // more Tile Data to be implemented
     // ...
     
-    Texture m_tileSet;
+    std::string f_texturePath;
+    Texture2D * m_tileSet = nullptr;
     Vector2 m_tileSetCoordinates;
 
-    Tile() : m_tileSet(LoadTexture("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png")), m_tileSetCoordinates({-1, -1}) {}
-    Tile(Vector2 coords) : m_tileSetCoordinates(coords), m_tileSet(LoadTexture("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png")) {}
-    Tile(int x, int y) : m_tileSetCoordinates({(float)x, (float)y}), m_tileSet(LoadTexture("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png")) {}
-    Tile(Vector2 coords, Texture tileset) : m_tileSetCoordinates(coords), m_tileSet(tileset) {}
-    Tile(int x, int y, Texture tileset) : m_tileSetCoordinates({(float)x, (float)y}), m_tileSet(tileset) {}
-    Tile(Texture tileset) : m_tileSet(tileset), m_tileSetCoordinates({-1, -1}) {}
+    Tile() : f_texturePath("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png"), m_tileSetCoordinates({-1, -1}) {}
+    Tile(Vector2 coords) : m_tileSetCoordinates(coords), f_texturePath("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png") {}
+    Tile(int x, int y) : m_tileSetCoordinates({(float)x, (float)y}), f_texturePath("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png") {}
+    Tile(Vector2 coords, std::string texturePath) : m_tileSetCoordinates(coords), f_texturePath(texturePath.c_str()) {}
+    Tile(int x, int y, std::string texturePath) : m_tileSetCoordinates({(float)x, (float)y}), f_texturePath(texturePath.c_str()) {}
+    Tile(std::string texturePath) : f_texturePath(texturePath.c_str()), m_tileSetCoordinates({-1, -1}) {}
 };
 
 /**

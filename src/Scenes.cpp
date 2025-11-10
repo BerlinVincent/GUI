@@ -27,12 +27,12 @@ void MenuScene::update() {
 void MenuScene::draw() {
     Vector2 mousePos = GetMousePosition();
     bool click = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
-
+    
     int width = GetScreenWidth();
     int height = GetScreenHeight();
     float padding = 0.2;
     float border = 0.1;
-
+    
     // coordinate box for menu elements to be drawn on
     Rect box{
         .left = (int)(width * border / 2),
@@ -40,10 +40,10 @@ void MenuScene::draw() {
         .width = (int)(width * (1 - border)),
         .height = (int)((height - box.top) * (1 - border) / (m_elements.size() + 1))
     };
-
+    
     BeginDrawing();
     ClearBackground(BLACK);
-
+    
     // draw the menu title
     DrawText(
         m_menuTitle.c_str(),
@@ -52,7 +52,7 @@ void MenuScene::draw() {
         height * border,
         YELLOW
     );
-
+    
     // coordinate box shift amount
     int deltaY = box.height * (1 + padding);
 
@@ -60,7 +60,7 @@ void MenuScene::draw() {
     // and wether they are selected
     for (int i = 0; i < (int)m_elements.size(); i++) {
         m_elements[i]->draw(box, i == highlight);
-
+        
         // handle mpuse interaction
         if (CheckCollisionPointRec(mousePos, box)) {
             if (mousePos.x != lastMouse.x || mousePos.y != lastMouse.y) {
@@ -68,18 +68,40 @@ void MenuScene::draw() {
                 lastMouse = mousePos;
             }
             if (click)
-                m_elements[highlight]->handleSelect();
+            m_elements[highlight]->handleSelect();
         }
         box.top += deltaY;  // shift coordinate box
     }
-
+    
     EndDrawing();
+}
+
+void WorldScene::preload_textures() {
+    m_textureCache.clear();
+
+    m_textureCache["Player"] = LoadTexture("../../Textures/Player.png");
+    t_Player = m_textureCache["Player"];
+
+    for (auto &row : m_tileMap) {
+        for (auto &tile :row) {
+            const std::string &path = tile.f_texturePath;
+
+            if (path.empty()) continue;
+
+            if (!m_textureCache.contains(path)) {
+                m_textureCache[path] = LoadTexture(path.c_str());
+
+            }
+        
+            tile.m_tileSet = &m_textureCache[path];
+        }
+    }
 }
 
 void WorldScene::update() {
     int key = GetKeyPressed();
     if (key == KEY_ESCAPE) killScene();
-
+    
     // movement input & direction detection
     if (playerPos.x == nextPos.x && playerPos.y == nextPos.y) {
         if (IsKeyDown(KEY_UP)) {
@@ -111,14 +133,14 @@ void WorldScene::update() {
     {
         Vector2 delta = {nextPos.x - playerPos.x, nextPos.y - playerPos.y};
         float dist = sqrtf(powf(delta.x, 2) + powf(delta.y, 2));
-
+        
         if (dist <= moveSpeed) playerPos = nextPos;
         else {
             playerPos.x += moveSpeed * (delta.x / dist);
             playerPos.y += moveSpeed * (delta.y / dist);
         }
     }
-
+    
     // adjust camera position
     camera.target = {playerPos.x + tileSize / 2, playerPos.y + tileSize / 2};
 }
@@ -148,7 +170,7 @@ void WorldScene::draw() {
                     .height = tileSize
                 };
 
-                DrawTexturePro(m_tileMap[y][x].m_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
+                DrawTexturePro(m_textureCache[m_tileMap[x][y].f_texturePath], src, dest, (Vector2){0, 0}, 0, WHITE);
             }
         }
     }
@@ -333,7 +355,7 @@ void WorldEditor::draw() {
                     .height = tileSize
                 };
 
-                DrawTexturePro(m_tileMap[y][x].m_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
+                DrawTexturePro(*m_tileMap[y][x].m_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
             }
         }
     }
