@@ -34,15 +34,20 @@ struct Tile {
     // ...
     
     std::string f_texturePath;
-    Texture2D * m_tileSet = nullptr;
+    Texture2D * t_tileSet = nullptr;
     Vector2 m_tileSetCoordinates;
 
-    Tile() : f_texturePath("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png"), m_tileSetCoordinates({-1, -1}) {}
-    Tile(Vector2 coords) : m_tileSetCoordinates(coords), f_texturePath("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png") {}
-    Tile(int x, int y) : m_tileSetCoordinates({(float)x, (float)y}), f_texturePath("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png") {}
-    Tile(Vector2 coords, std::string texturePath) : m_tileSetCoordinates(coords), f_texturePath(texturePath.c_str()) {}
-    Tile(int x, int y, std::string texturePath) : m_tileSetCoordinates({(float)x, (float)y}), f_texturePath(texturePath.c_str()) {}
-    Tile(std::string texturePath) : f_texturePath(texturePath.c_str()), m_tileSetCoordinates({-1, -1}) {}
+    Tile()
+    : f_texturePath("../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png"), m_tileSetCoordinates({-1, -1}) {}
+
+    Tile(Vector2 coords, std::string texturePath = "../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png")
+    : m_tileSetCoordinates(coords), f_texturePath(texturePath.c_str()) {}
+
+    Tile(int x, int y, std::string texturePath = "../../Textures/basic_tileset_and_assets_standard/terrain_tiles_v2.png")
+    : m_tileSetCoordinates({(float)x, (float)y}), f_texturePath(texturePath.c_str()) {}
+
+    Tile(std::string texturePath)
+    : f_texturePath(texturePath.c_str()), m_tileSetCoordinates({-1, -1}) {}
 };
 
 /**
@@ -102,6 +107,8 @@ struct Element {
  */
 class Button : public Element {
 
+protected:
+
 	/**
 	 * @brief The button's label, drawn as text
 	 * @example "Start Game", "Quit"
@@ -117,7 +124,7 @@ class Button : public Element {
     // How large the Button should draw its label text
     TextFontSize m_tfSize;
 
-	public:
+public:
 
     auto getLabel() -> std::string {
         return m_label;
@@ -136,33 +143,7 @@ class Button : public Element {
 	 * @param box The background box
 	 * @param highlight Wether the button should be drawn as highlighted
 	 */
-    void draw(Rect box, bool highlight) override {
-        Color textColor = highlight ? BLACK : RAYWHITE;
-        Color backgroundColor = highlight ? SKYBLUE : DARKGRAY;
-		
-        if (m_alignment == Align::left) {
-            DrawRectangle(box.left, box.top, box.width, box.height, backgroundColor);
-            DrawText(m_label.c_str(),
-                     box.left + (box.height - font_size(m_tfSize)) / 2,
-                     box.top + (box.height - font_size(m_tfSize)) / 2,
-                     font_size(m_tfSize),
-                     textColor);
-        } else if (m_alignment == Align::center) {
-            DrawRectangle(box.left, box.top, box.width, box.height, backgroundColor);
-            DrawText(m_label.c_str(),
-                     box.left + (box.width - MeasureText(m_label.c_str(), font_size(m_tfSize))) / 2,
-                     box.top + (box.height - font_size(m_tfSize)) / 2,
-                     font_size(m_tfSize),
-                     textColor);
-        } else {
-            DrawRectangle(box.left, box.top, box.width, box.height, backgroundColor);
-            DrawText(m_label.c_str(),
-                     box.left + box.width - MeasureText(m_label.c_str(), font_size(m_tfSize)) - (box.height - font_size(m_tfSize)) / 2,
-                     box.top + (box.height - font_size(m_tfSize)) / 2,
-                     font_size(m_tfSize),
-                     textColor);
-        }        
-    }
+    void draw(Rect box, bool highlight) override;
 
 	/**
 	 * @brief A templated constructor, allowing passing any callable to button and flexible behaviour
@@ -170,5 +151,14 @@ class Button : public Element {
 	 * @param fn The button's `m_command`
 	 */
     template <typename Fn>
-    Button(std::string label, Fn fn, Align al, TextFontSize tfs = medium) : m_label(std::move(label)), m_command(fn), m_alignment(al), m_tfSize(tfs) {}
+    Button(std::string label, Fn fn, Align al, TextFontSize tfs = medium)
+    : m_label(std::move(label)), m_command(fn), m_alignment(al), m_tfSize(tfs) {}
+};
+
+class ScrollableGrid : public Element {
+    std::pair<Button, Button> ui_scrollButtons;
+    std::vector<Element> ui_gridElements;
+
+    void handleSelect() override;
+    void draw(Rect box, bool highlight) override;
 };

@@ -97,7 +97,7 @@ void WorldScene::preload_textures() {
             }
         
             // reference the correct texture for every tile
-            tile.m_tileSet = &m_textureCache[path];
+            tile.t_tileSet = &m_textureCache[path];
         }
     }
 }
@@ -359,7 +359,7 @@ void WorldEditor::draw() {
                     .height = tileSize
                 };
 
-                DrawTexturePro(*m_tileMap[y][x].m_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
+                DrawTexturePro(*m_tileMap[y][x].t_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
             }
         }
     }
