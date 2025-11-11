@@ -149,10 +149,11 @@ void WorldScene::update() {
     camera.target = {playerPos.x + tileSize / 2, playerPos.y + tileSize / 2};
 }
 
-void WorldScene::draw() {
-    BeginDrawing();
+void WorldScene::drawStatic() {
+    worldBuffer = LoadRenderTexture(m_tileMap[0].size() * tileSize, m_tileMap.size() * tileSize);
+
+    BeginTextureMode(worldBuffer);
     ClearBackground(BLACK);
-    BeginMode2D(camera);
 
     Rect src, dest;
 
@@ -178,13 +179,29 @@ void WorldScene::draw() {
             }
         }
     }
-    
+
+    EndTextureMode();
+
+    worldBufferValid = true;
+}
+
+void WorldScene::draw() {
+    BeginDrawing();
+    ClearBackground(BLACK);
+    BeginMode2D(camera);
+
+    if (!worldBufferValid) drawStatic();
+    DrawTextureRec(worldBuffer.texture,
+                   {0, 0, (float)worldBuffer.texture.width, -(float)worldBuffer.texture.height},
+                   {0, 0},
+                   WHITE);
+
     /* // Draw debug grid
     for (int y = 0; y < m_tileMap.size(); y++) {
         for (int x = 0; x < m_tileMap[y].size(); x++) {
             int px = x * tileSize;
             int py = y * tileSize;
-
+            
             // Top border
             DrawLine(px, py, px + tileSize, py, GREEN);
             // Left border
@@ -193,6 +210,8 @@ void WorldScene::draw() {
     } */
 
     // draw Player Shadow
+    
+    Rect src, dest;
 
     src = {
         .left = 3 * tileSize - 3,
@@ -255,11 +274,32 @@ void WorldScene::draw() {
 
     DrawRectangle(10, 10, 100, 75, Fade(DARKGRAY, 0.8f));
 
+    std::string lastMoveDirectionStr;
+
+    switch (lastMoveDirection)
+    {
+    case 0:
+        lastMoveDirectionStr = "down";
+        break;
+    case 1:
+        lastMoveDirectionStr = "left";
+        break;
+    case 2:
+        lastMoveDirectionStr = "up";
+        break;
+    case 3:
+        lastMoveDirectionStr = "right";
+        break;
+    default:
+        break;
+    }
+
     DrawText(std::to_string((int)playerPos.x).c_str(), 15, 15, 20, YELLOW);
     DrawText(std::to_string((int)playerPos.y).c_str(), 15, 35, 20, YELLOW);
     DrawText(std::to_string((int)nextPos.x).c_str(), 70, 15, 20, YELLOW);
     DrawText(std::to_string((int)nextPos.y).c_str(), 70, 35, 20, YELLOW);
-    DrawText(std::to_string(lastMoveDirection).c_str(), 15, 60, 20, YELLOW);
+    DrawText(lastMoveDirectionStr.c_str(), 15, 60, 20, YELLOW);
+    DrawText(TextFormat("%d", GetFPS()), 70, 60, 20, YELLOW);
 
     EndDrawing();
 }

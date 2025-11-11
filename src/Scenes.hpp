@@ -86,12 +86,18 @@ class WorldScene : public Scene {
     int lastMoveDirection;
     
     // the set of textures tiles render as
-    Texture2D * t_Player;
     std::unordered_map<std::string, Texture2D> m_textureCache;
+    // texture for the player
+    Texture2D * t_Player;
+    // draw static textures here once and reuse
+    RenderTexture2D worldBuffer;
+    // wether the world buffer needs to be updated
+    bool worldBufferValid;
     
 public:
     void preload_textures();
     void update() override;
+    void drawStatic();
     void draw() override;
 
     bool isWalkable(int y, int x) {
@@ -147,6 +153,7 @@ public:
         for (auto &[path, texture] : m_textureCache) {
             UnloadTexture(texture);
         }
+        UnloadRenderTexture(worldBuffer);
         m_textureCache.clear();
     }
 };
