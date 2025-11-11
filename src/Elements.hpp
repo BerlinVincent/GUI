@@ -5,6 +5,7 @@
 #define FRAMERATE 60
 
 #include <raylib.h>
+#include <string>
 #include <functional>
 
 enum class Align {
