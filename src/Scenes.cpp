@@ -190,6 +190,7 @@ void WorldScene::draw() {
     ClearBackground(BLACK);
     BeginMode2D(camera);
 
+    // draw worldBuffer if it has changed
     if (!worldBufferValid) drawStatic();
     DrawTextureRec(worldBuffer.texture,
                    {0, 0, (float)worldBuffer.texture.width, -(float)worldBuffer.texture.height},
@@ -351,6 +352,48 @@ void WorldEditor::update() {
     camera.target = {playerPos.x + tileSize / 2, playerPos.y + tileSize / 2};
 }
 
+void WorldEditor::drawStatic() {
+    worldBuffer = LoadRenderTexture(m_tileMap[0].size() * tileSize, m_tileMap.size() * tileSize);
+
+    BeginTextureMode(worldBuffer);
+    ClearBackground(BLACK);
+
+    Rect src, dest;
+
+    for (int y = 0; y < m_tileMap.size(); y++) {
+        for (int x = 0; x < m_tileMap[y].size(); x++) {
+            Vector2 tileIndex = m_tileMap[y][x].m_tileSetCoordinates;
+
+            if (tileIndex.x + tileIndex.y >= 0) {
+                src = {
+                    .left = (int)tileIndex.x * tileSize,
+                    .top = (int)tileIndex.y * tileSize,
+                    .width = tileSize,
+                    .height = tileSize
+                };
+                dest = {
+                    .left = y * tileSize,
+                    .top = x * tileSize,
+                    .width = tileSize,
+                    .height = tileSize
+                };
+
+                DrawTexturePro(m_textureCache[m_tileMap[x][y].f_texturePath], src, dest, (Vector2){0, 0}, 0, WHITE);
+            }
+        }
+    }
+
+    for (int i = 0; i <= m_tileMap.size(); i++) {
+        float I = i * tileSize;
+        DrawLineEx({I, 0.0f}, {I, (float)m_tileMap.size() * tileSize}, 2.0f, GREEN);
+        DrawLineEx({0.0f, I}, {(float)m_tileMap.size() * tileSize, I}, 2.0f, GREEN);
+    }
+
+    EndTextureMode();
+
+    worldBufferValid = true;
+}
+
 void WorldEditor::draw() {
     BeginDrawing();
 
@@ -370,39 +413,22 @@ void WorldEditor::draw() {
     camera.target.y = roundf(camera.target.y);
 
     BeginMode2D(camera);
+
+    // draw worldBuffer if it has changed
+    if (!worldBufferValid) drawStatic();
+    DrawTextureRec(worldBuffer.texture,
+                   {0, 0, (float)worldBuffer.texture.width, -(float)worldBuffer.texture.height},
+                   {0, 0},
+                   WHITE);
     
     // Draw underlying grid, accounts for subpixel errors
-    for (int i = 0; i <= m_tileMap.size(); i++) {
-        float pos = (float)i * tileSize + 0.5f;
-        DrawLineEx({pos, 0.5f}, {pos, (float)m_tileMap.size() * tileSize + 0.5f}, 1.0f, GREEN);
-        DrawLineEx({0.5f, pos}, {(float)m_tileMap.size() * tileSize + 0.5f, pos}, 1.0f, GREEN);
-    }
+    //for (int i = 0; i <= m_tileMap.size(); i++) {
+    //    float pos = (float)i * tileSize + 0.5f;
+    //    DrawLineEx({pos, 0.5f}, {pos, (float)m_tileMap.size() * tileSize + 0.5f}, 1.0f, GREEN);
+    //    DrawLineEx({0.5f, pos}, {(float)m_tileMap.size() * tileSize + 0.5f, pos}, 1.0f, GREEN);
+    //}
 
     Rect src, dest;
-
-    // draw all tiles
-    for (int y = 0; y < m_tileMap.size(); y++) {
-        for (int x = 0; x < m_tileMap[y].size(); x++) {
-            Vector2 tileIndex = m_tileMap[y][x].m_tileSetCoordinates;
-
-            if (tileIndex.x + tileIndex.y >= 0) {
-                src = {
-                    .left = (int)tileIndex.x * tileSize,
-                    .top = (int)tileIndex.y * tileSize,
-                    .width = tileSize,
-                    .height = tileSize
-                };
-                dest = {
-                    .left = y * tileSize,
-                    .top = x * tileSize,
-                    .width = tileSize,
-                    .height = tileSize
-                };
-
-                DrawTexturePro(*m_tileMap[y][x].t_tileSet, src, dest, (Vector2){0, 0}, 0, WHITE);
-            }
-        }
-    }
 
     // draw Player Shadow
 

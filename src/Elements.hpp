@@ -17,6 +17,19 @@ enum TextFontSize {
 };
 
 /**
+ * @brief A function that scales font size with window size based on a readable size
+ * @returns The font size for the text
+ * @author BerlinVincent
+ */
+static auto font_size(TextFontSize tfSize = medium) -> int {
+    if (tfSize == tiny) return GetFontDefault().baseSize * 2 * GetScreenHeight() / SCREEN_HEIGHT;
+    else if (tfSize == small) return GetFontDefault().baseSize * 4 * GetScreenHeight() / SCREEN_HEIGHT;
+    else if (tfSize == large) return GetFontDefault().baseSize * 16 * GetScreenHeight() / SCREEN_HEIGHT;
+    else if (tfSize == giant) return GetFontDefault().baseSize * 32 * GetScreenHeight() / SCREEN_HEIGHT;
+    else return GetFontDefault().baseSize * 8 * GetScreenHeight() / SCREEN_HEIGHT;
+}
+
+/**
  * @brief A storage wrapper for rectangle features
  * @author TheRobotFox
  */
@@ -50,19 +63,6 @@ struct Tile {
     Tile(std::string texturePath)
     : f_texturePath(texturePath.c_str()), m_tileSetCoordinates({-1, -1}) {}
 };
-
-/**
- * @brief A function that scales font size with window size based on a readable size
- * @returns The font size for the text
- * @author BerlinVincent
- */
-static auto font_size(TextFontSize tfSize = medium) -> int {
-    if (tfSize == tiny) return GetFontDefault().baseSize * 2 * GetScreenHeight() / SCREEN_HEIGHT;
-    else if (tfSize == small) return GetFontDefault().baseSize * 4 * GetScreenHeight() / SCREEN_HEIGHT;
-    else if (tfSize == large) return GetFontDefault().baseSize * 16 * GetScreenHeight() / SCREEN_HEIGHT;
-    else if (tfSize == giant) return GetFontDefault().baseSize * 32 * GetScreenHeight() / SCREEN_HEIGHT;
-    else return GetFontDefault().baseSize * 8 * GetScreenHeight() / SCREEN_HEIGHT;
-}
 
 /**
  * @brief An abstract base interface for common UI component behaviour

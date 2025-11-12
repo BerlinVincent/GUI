@@ -97,7 +97,7 @@ class WorldScene : public Scene {
 public:
     void preload_textures();
     void update() override;
-    void drawStatic();
+    virtual void drawStatic();
     void draw() override;
 
     bool isWalkable(int y, int x) {
@@ -172,6 +172,7 @@ protected:
 
 public:
     void update() override;
+    void drawStatic() override;
     void draw() override;
 
     bool isWalkable(int x, int y) {
